@@ -1,0 +1,74 @@
+  <?xml version="1.0" encoding="utf-8" ?> 
+- <provider url="https://user.nbr.by/bgbilling/webexecuter">
+- <request type="GET" url="${provider.url}" required="true" charset="UTF-8">
+- <request type="POST" url="${provider.url}" required="true">
+  <param name="user" value="${account.login}" /> 
+  <param name="pswd" value="${account.password}" /> 
+  <param name="midAuth" value="0" /> 
+  <search regex="action=Exit" required="true" onError="exception.login" /> 
+  <search regex="var contractId = (\d*);" required="true" group="1" var="contractId" /> 
+  </request>
+  </request>
+- <request type="GET" url="${provider.url}?action=GetBalance&mid=6&module=contract&contractId=${var.contractId}" required="true">
+- <search regex="остаток\sна\sначало\sмесяца</td>[\s\S]*?<td>(.*)</td" group="1">
+  <balance units="р" name="остаток на начало месяца" fractional="false" /> 
+  </search>
+- <search regex="Приход\sза\sмесяц\s\(всего\)</td>[\s\S]*?<td>(.*)</td" group="1">
+  <balance units="р" name="приход за месяц" fractional="false" /> 
+  </search>
+- <search regex="Расход\sза\sмесяц\s\(всего\)</td>[\s\S]*?<td>(.*)</td" group="1">
+  <balance units="р" name="расход за месяц" fractional="false" /> 
+  </search>
+- <search regex="Наработка\sза\sмесяц\s\(всего\)</td>[\s\S]*?<td>(.*)</td" group="1">
+  <balance units="р" name="наработка за месяц" fractional="false" /> 
+  </search>
+- <search regex="онентская\sплата\(физические\sлица\)</td>[\s\S]*?<td>(.*)</td" group="1">
+  <balance units="р" name="плата" fractional="false" /> 
+  </search>
+- <search regex="одящий\sостаток\sна\sконец\sмесяца</td>[\s\S]*?<td>(.*)</td" group="1">
+  <balance units="р" name="исходящий остаток" fractional="false" index="1" /> 
+  </search>
+- <search regex="Лимит</td>[\s\S]*?<td>(.*)</td" group="1">
+  <balance units="р" name="лимит" fractional="false" /> 
+  </search>
+  <plan value="${account.login}" /> 
+  </request>
+- <request type="GET" url="${provider.url}?action=TrafficReport&mid=17&module=inet&contractId=${var.contractId}" required="true">
+  <search regex="name="inetServId"[^>]*><option\svalue="(\d+)">" required="true" group="1" var="inetServId" /> 
+  </request>
+- <request type="GET" url="${provider.url}?action=TrafficReport&mid=17&module=inet&trafficTypeIds=1&trafficTypeIds=2&trafficTypeIds=3&trafficTypeIds=4&unit=1073741824&inetServId=${var.inetServId}&contractId=${var.contractId}" required="true">
+- <search regex="Итого:\s(.*)[\S\s]*;ГБ" group="1">
+  <balance units="Гб" name="трафика всего" fractional="false" /> 
+  </search>
+  </request>
+- <request type="GET" url="${provider.url}?action=SessionReport&mid=17&module=inet&unit=1073741824&inetServId=${var.inetServId}&contractId=${var.contractId}" required="true">
+- <search regex="Итого(?:[\S\s]*?<td[^>]*>){1}[\S\s]*?\[(\d+)\]" group="1">
+  <balance units="мин" name="итого времени работы" fractional="false" /> 
+  </search>
+- <search regex="Итого(?:[\S\s]*?<td[^>]*>){2}([\S\s]*?)<\/td>" group="1">
+  <balance units="р" name="стоимость трафика" fractional="false" /> 
+  </search>
+  </request>
+- <request type="GET" url="${provider.url}?action=TrafficReport&mid=17&module=inet&trafficTypeIds=1&unit=1073741824&inetServId=${var.inetServId}&contractId=${var.contractId}" required="true">
+- <search regex="Итого:\s(.*)[\S\s]*;ГБ" group="1">
+  <balance units="Гб" name="трафика VPN-вх" fractional="false" /> 
+  </search>
+  </request>
+- <request type="GET" url="${provider.url}?action=TrafficReport&mid=17&module=inet&trafficTypeIds=2&unit=1073741824&inetServId=${var.inetServId}&contractId=${var.contractId}" required="true">
+- <search regex="Итого:\s(.*)[\S\s]*;ГБ" group="1">
+  <balance units="Гб" name="трафика VPN-исх" fractional="false" /> 
+  </search>
+  </request>
+- <request type="GET" url="${provider.url}?action=TrafficReport&mid=17&module=inet&trafficTypeIds=3&unit=1073741824&inetServId=${var.inetServId}&contractId=${var.contractId}" required="true">
+- <search regex="Итого:\s(.*)[\S\s]*;ГБ" group="1">
+  <balance units="Гб" name="трафика Пиринг-вх" fractional="false" /> 
+  </search>
+  </request>
+- <request type="GET" url="${provider.url}?action=TrafficReport&mid=17&module=inet&trafficTypeIds=4&unit=1073741824&inetServId=${var.inetServId}&contractId=${var.contractId}" required="true">
+- <search regex="Итого:\s(.*)[\S\s]*;ГБ" group="1">
+  <balance units="Гб" name="трафика Пиринг-исх" fractional="false" /> 
+  </search>
+  </request>
+  <request type="GET" url="${provider.url}?action=Exit&mid=contract" /> 
+  </provider>
+  
