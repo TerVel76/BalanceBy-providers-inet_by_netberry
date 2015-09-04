@@ -1,9 +1,8 @@
-  <?xml version="1.0" encoding="utf-8" ?> 
-- <repository version="1">
-- <category id="repo_dev" name="Development" prefix="dev">
-- <subcaterogy id="repo_dev_sd" name="SD" prefix="tel">
-  <provider id="100005" name="Netberry (Беларусь)" type="xml" icon="inet_by_netberry" xml="inet_by_netberry" /> 
-  </subcaterogy>
-  </category>
-  </repository>
-  
+﻿<?xml version="1.0" encoding="utf-8"?>
+<repository version="1">
+    <category id="repo_dev" name="Development" prefix="dev">
+        <subcaterogy id="repo_dev_sd" name="SD" prefix="tel">
+            <provider id="100005" name="Netberry (Беларусь)" type="xml" icon="inet_by_netberry" xml="inet_by_netberry"/>
+        </subcaterogy>
+    </category>
+</repository>
