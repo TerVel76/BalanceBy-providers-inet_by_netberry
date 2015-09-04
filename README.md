@@ -1,7 +1,5 @@
 # BalanceBy-providers-inet_by_netberry
-Плагин для программы BalanceBy
-http://vladyud.com/balanceby/help/index.html
-Провайдер Netberry (Беларусь)
+Плагин для программы BalanceBy , провайдер Netberry (Беларусь)
 
 1. Содержимое архива xxxxxxxxxx.zip необходимо распаковать на карту памяти в папку //SD/balance_by
 2. Выполнить Настройки -> Проверить обновления. Будет выполнено обновление структуры репозитория (в том числе с SD).
